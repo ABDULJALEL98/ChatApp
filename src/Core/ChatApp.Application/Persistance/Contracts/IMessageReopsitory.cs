@@ -9,5 +9,5 @@ namespace ChatApp.Application.Persistance.Contracts;
 
 public interface IMessageReopsitory : IGenericRepository<Message>
 {
-
+    //for future
 }
