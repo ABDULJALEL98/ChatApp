@@ -13,9 +13,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentatio
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{8D1F88CE-14EE-40E6-8689-41135C13456F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatApp.Domain", "src\Core\ChatApp.Domain\ChatApp.Domain.csproj", "{853F9F63-2F18-48B2-88C3-8D9A8240A9C8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatApp.Domain", "src\Core\ChatApp.Domain\ChatApp.Domain.csproj", "{853F9F63-2F18-48B2-88C3-8D9A8240A9C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatApp.Application", "src\Core\ChatApp.Application\ChatApp.Application.csproj", "{517FB997-5E88-4079-BF14-C7A960D4B756}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatApp.Application", "src\Core\ChatApp.Application\ChatApp.Application.csproj", "{517FB997-5E88-4079-BF14-C7A960D4B756}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatApp.Persistence", "src\Infarsturcture\ChatApp.Persistence\ChatApp.Persistence.csproj", "{82583B6E-2260-4268-8914-106DEE8346BC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,6 +33,10 @@ Global
 		{517FB997-5E88-4079-BF14-C7A960D4B756}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{517FB997-5E88-4079-BF14-C7A960D4B756}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{517FB997-5E88-4079-BF14-C7A960D4B756}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82583B6E-2260-4268-8914-106DEE8346BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82583B6E-2260-4268-8914-106DEE8346BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82583B6E-2260-4268-8914-106DEE8346BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82583B6E-2260-4268-8914-106DEE8346BC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -42,6 +48,7 @@ Global
 		{8D1F88CE-14EE-40E6-8689-41135C13456F} = {FF116042-9378-475B-BED4-BEEC88EB5494}
 		{853F9F63-2F18-48B2-88C3-8D9A8240A9C8} = {CC482262-8E04-4768-A8CE-E7DF0ABC9031}
 		{517FB997-5E88-4079-BF14-C7A960D4B756} = {CC482262-8E04-4768-A8CE-E7DF0ABC9031}
+		{82583B6E-2260-4268-8914-106DEE8346BC} = {99632508-AF27-49E2-8D4E-5E4155C35CEB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F0C4C450-6647-442F-A575-A9770FFE4313}
