@@ -8,8 +8,12 @@ using System.Threading.Tasks;
 
 namespace ChatApp.Domain.Entities;
 
-public class AppUser : IdentityUser
+public sealed class AppUser : IdentityUser
 {
+    public AppUser()
+    {
+        Photos = new HashSet<Photo>();
+    }
     public DateTime DateOfBirth { get; set; }
     public string KnownAs { get; set; } = string.Empty;
     public DateTime Created { get; set; } = DateTime.Now;
