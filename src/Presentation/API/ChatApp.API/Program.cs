@@ -45,9 +45,9 @@ public class Program
 
         app.UseHttpsRedirection();
 
-        app.UseAuthorization();
         app.UseCors(policyName:"CorsPolicy");
-
+        app.UseAuthentication();
+        app.UseAuthorization();
         app.MapControllers();
         ChatApp.Persistence.DependancyInjection.ConfigMiddleware(app);
 
