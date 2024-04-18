@@ -49,6 +49,8 @@ public class Program
         app.UseCors(policyName:"CorsPolicy");
 
         app.MapControllers();
+        ChatApp.Persistence.DependancyInjection.ConfigMiddleware(app);
+
 
         app.Run();
     }

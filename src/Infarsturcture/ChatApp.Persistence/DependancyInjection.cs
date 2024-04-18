@@ -1,14 +1,14 @@
 ﻿using ChatApp.Application.Persistance.Contracts;
+using ChatApp.Domain.Entities;
+using ChatApp.Persistence.Configuration.Entities;
 using ChatApp.Persistence.DatabaseContext;
 using ChatApp.Persistence.Repositories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ChatApp.Persistence;
 
@@ -25,6 +25,37 @@ public static class DependancyInjection
         //Configure
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         services.AddScoped<IMessageReopsitory, MessageRepository>();
+        //config idenitty
+        services.AddIdentity<AppUser, IdentityRole>()
+        .AddEntityFrameworkStores<AppliactionDbContext>()
+        .AddDefaultTokenProviders();
+        services.AddMemoryCache();
+        services.AddAuthentication(opt =>
+        {
+            opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
+        });
+
+
+
+
+
+
+
         return services;
     }
+    public static async void ConfigMiddleware(this IApplicationBuilder app)
+    {
+        using (var scope = app.ApplicationServices.CreateScope())
+        {
+            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
+            var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            await IdentitySeed.SeedUserAsync(userManager, roleManager);
+
+        }
+    }
+
+
+
+
 }
