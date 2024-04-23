@@ -9,6 +9,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace ChatApp.Persistence;
 
@@ -25,22 +28,29 @@ public static class DependancyInjection
         //Configure
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         services.AddScoped<IMessageReopsitory, MessageRepository>();
+
+        //Configure Token
+        services.AddScoped<ITokenServices, TokenServices>();
+
+
         //config idenitty
         services.AddIdentity<AppUser, IdentityRole>()
         .AddEntityFrameworkStores<AppliactionDbContext>()
         .AddDefaultTokenProviders();
         services.AddMemoryCache();
-        services.AddAuthentication(opt =>
-        {
-            opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(opt =>
+                {
+                    opt.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = false,
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration[key: "Token:Key"])),
+                        ValidIssuer = configuration[key: "Token:Issuer"]
+                    };
 
-        });
-
-
-
-
-
-
+                });
 
         return services;
     }
