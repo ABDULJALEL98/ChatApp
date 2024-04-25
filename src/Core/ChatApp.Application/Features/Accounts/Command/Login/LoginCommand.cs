@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ChatApp.Application.Persistance.Contracts;
 using ChatApp.Application.Responses;
 using ChatApp.Domain.Entities;
 using MediatR;
@@ -25,15 +26,17 @@ public class LoginCommand:IRequest<BaseCommonResponse>
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IMapper _mapper;
         private readonly SignInManager<AppUser> _signInManager;
+        private readonly ITokenServices _tokenServices;
 
         public Handler(UserManager<AppUser> userManager,RoleManager<IdentityRole> roleManager,IMapper mapper,
-            SignInManager<AppUser> signInManager)
+            SignInManager<AppUser> signInManager, ITokenServices tokenServices)
             
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _mapper = mapper;
             _signInManager = signInManager;
+            _tokenServices = tokenServices;
         }
         public async Task<BaseCommonResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
@@ -53,7 +56,7 @@ public class LoginCommand:IRequest<BaseCommonResponse>
                         {
                             userName = user.UserName,
                             email = user.Email,
-                            token = ""
+                            token = _tokenServices.CreateToken(user)
                         };
                         return res;
                     }

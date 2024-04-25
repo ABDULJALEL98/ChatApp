@@ -1,4 +1,5 @@
-﻿using ChatApp.Application.Responses;
+﻿using ChatApp.Application.Persistance.Contracts;
+using ChatApp.Application.Responses;
 using ChatApp.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -22,29 +23,37 @@ public class RegisterCommand:IRequest<BaseCommonResponse>
     class Handler : IRequestHandler<RegisterCommand, BaseCommonResponse>
     {
         private readonly UserManager<AppUser> _userManager;
+        private readonly ITokenServices _tokenServices;
 
-        public Handler(UserManager<AppUser> userManager)
+        public Handler(UserManager<AppUser> userManager,ITokenServices tokenServices)
         {
            _userManager = userManager;
+           _tokenServices = tokenServices;
         }
-        public async Task<BaseCommonResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
+
+        public Task<BaseCommonResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
+        {
+            return Handle(request, _tokenServices, cancellationToken);
+        }
+
+        public async Task<BaseCommonResponse> Handle(RegisterCommand request, ITokenServices _tokenServices, CancellationToken cancellationToken)
         {
             BaseCommonResponse res = new();
-           try
+            try
             {
                 var user = new AppUser()
                 {
                     Email = request.RegisterDto.Email,
                     UserName = request.RegisterDto.UserName,
                 };
-               var response = await _userManager.CreateAsync(user, request.RegisterDto.Password);
-                if(response.Succeeded == false)
+                var response = await _userManager.CreateAsync(user, request.RegisterDto.Password);
+                if (response.Succeeded == false)
                 {
-                    foreach(var err in response.Errors)
+                    foreach (var err in response.Errors)
                     {
                         res.Errors.Add(item: $"{err.Code} = {err.Description}");
                     }
-               
+
                     res.IsSuccess = false;
                     res.Message = "badRequste";
                     return res;
@@ -55,12 +64,14 @@ public class RegisterCommand:IRequest<BaseCommonResponse>
                 {
                     userName = user.UserName,
                     email = user.Email,
-                    token = ""
+
+                    token = _tokenServices.CreateToken(user)
+
                 };
-            return res;
+                return res;
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex) 
+                {
                 res.IsSuccess = false;
                 res.Message = ex.Message;
 
