@@ -9,6 +9,6 @@ namespace ChatApp.Application.Persistance.Contracts;
 
 public interface ITokenServices
 {
-    Task CreateToken(AppUser user);
-    string GetToken(AppUser user);
+    Task<string> CreateToken(AppUser user);
+    
 }
