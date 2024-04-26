@@ -38,7 +38,11 @@ public static class DependancyInjection
         .AddEntityFrameworkStores<AppliactionDbContext>()
         .AddDefaultTokenProviders();
         services.AddMemoryCache();
-        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        services.AddAuthentication(opt=>
+        {
+            opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        })
                 .AddJwtBearer(opt =>
                 {
                     opt.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
