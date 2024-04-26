@@ -1,6 +1,8 @@
-﻿using ChatApp.Application.Features.Accounts.Command.Login;
+﻿using ChatApp.Application.Features.Accounts.Command.GetCurrentUser;
+using ChatApp.Application.Features.Accounts.Command.Login;
 using ChatApp.Application.Features.Accounts.Command.Register;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -69,6 +71,24 @@ public class AccountsController : BaseController
         catch (Exception)
         {
             throw;
+        }
+    }
+    [Authorize]
+    [HttpGet(template:"get-current-user")]
+    public async Task<ActionResult<UserReturnDto> > GetCurrentUser(CancellationToken ct)
+    {
+        try
+        {
+            var user = await _mediator.Send(new GetCurrentUserQuery(), ct);
+            if(user is not null)
+            {
+                return Ok(user);
+            }
+            return BadRequest();
+        }
+        catch(Exception ex)
+        {
+            return BadRequest(ex.Message);
         }
     }
 }
