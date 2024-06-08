@@ -1,4 +1,5 @@
-﻿using ChatApp.Application.Features.Accounts.Command.GetCurrentUser;
+﻿using ChatApp.Application.Features.Accounts.Command.CheckUserNameExistOrEmailExist;
+using ChatApp.Application.Features.Accounts.Command.GetCurrentUser;
 using ChatApp.Application.Features.Accounts.Command.Login;
 using ChatApp.Application.Features.Accounts.Command.Register;
 using MediatR;
@@ -87,6 +88,22 @@ public class AccountsController : BaseController
             return BadRequest();
         }
         catch(Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+
+    [HttpGet(template: "check-userName-or-email-exist/{searchTerm}")]
+    public async Task<ActionResult<bool>> CheckUserNameExist(string searchTerm , CancellationToken ct)
+    {
+        try
+        {
+            var result = await _mediator.Send( request: new CheckUserNameOrEmailExistQuery(searchTerm), ct);
+            if (result)
+                return Ok(value: true);
+            return NotFound(value: true);
+        }
+        catch (Exception ex)
         {
             return BadRequest(ex.Message);
         }
